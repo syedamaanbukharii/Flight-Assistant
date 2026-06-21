@@ -1,0 +1,34 @@
+# ---------------------------------------------------------------------------
+# Runtime dependencies for the Flight & Travel Assistant.
+# Python 3.12+ required. Pinned to compatible ranges so the project installs
+# cleanly and reproducibly while still receiving patch updates.
+# Install:  pip install -r requirements.txt
+# ---------------------------------------------------------------------------
+
+# Web framework + ASGI server
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+
+# Validation & configuration
+pydantic>=2.7,<3.0
+pydantic-settings>=2.3,<3.0
+python-dotenv>=1.0,<2.0
+
+# LLM (Groq-hosted Llama models)
+groq>=0.13,<1.0
+
+# Database
+SQLAlchemy>=2.0,<3.0
+
+# HTTP client
+httpx>=0.27,<1.0
+
+# Coupon scraping (lightweight public pages)
+beautifulsoup4>=4.12,<5.0
+playwright>=1.45,<2.0
+
+# Scheduling
+APScheduler>=3.10,<4.0
+
+# Frontend
+streamlit>=1.36,<2.0

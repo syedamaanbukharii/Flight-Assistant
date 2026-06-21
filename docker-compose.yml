@@ -1,0 +1,42 @@
+# Orchestrates the FastAPI backend and the Streamlit frontend.
+#
+#   docker compose up --build
+#
+# The backend reads secrets from your local `.env` (copy from .env.example).
+# The SQLite database is persisted in a named volume so it survives restarts;
+# the seed catalogue ships inside the image at /app/backend/data.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: flight-assistant-backend
+    env_file:
+      - .env
+    environment:
+      # Persist the DB on a volume mounted away from the (image-baked) seed file.
+      DATABASE_URL: "sqlite:////app/var/flight_assistant.db"
+      COUPON_SEED_PATH: "/app/backend/data/coupons.seed.json"
+    ports:
+      - "8000:8000"
+    volumes:
+      - db-data:/app/var
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: flight-assistant-frontend
+    environment:
+      BACKEND_URL: "http://backend:8000"
+      FRONTEND_TIMEOUT: "60"
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  db-data:

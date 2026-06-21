@@ -1,0 +1,32 @@
+[project]
+name = "flight-assistant"
+version = "1.0.0"
+description = "AI-powered conversational Flight & Travel Assistant"
+requires-python = ">=3.12"
+readme = "README.md"
+
+# Dependencies are managed via requirements.txt / requirements-dev.txt for a
+# simple, transparent install flow. This file holds tooling configuration only.
+
+[tool.pytest.ini_options]
+# Make the `backend/` package root importable (the app uses absolute imports
+# such as `from app.config import Settings`).
+pythonpath = ["backend"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra -q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["backend", "tests"]
+
+[tool.ruff.lint]
+# Focused on correctness and consistency: pycodestyle (E), pyflakes (F),
+# import sorting (I), and comprehension hygiene (C4). The more opinionated
+# pyupgrade/bugbear/simplify families are intentionally not enforced here.
+select = ["E", "F", "I", "C4"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]  # test data/assertions read better unwrapped
